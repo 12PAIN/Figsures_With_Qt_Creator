@@ -1,20 +1,28 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "figure_tools.h"
+#include "Figures/figuresmanager.h"
+#include "Prism/Prism.h"
+#include "buttonlist.h"
+
+FiguresManager* figureManager = new FiguresManager();
 
 FiguresCollection* figureCollection = new FiguresCollection();
 PrismCollection* prismCollection = new PrismCollection();
+
 
 int currentFigureNum = -1;
 int currentPrismNum = -1;
 
 Prism* currentPrism;
-Figure* currentFigure;
+Outer* currentFigure;
+
+Outer* currentOuter;
 
 int CurrentType = 0;
 
-void renderCurrent(Ui::MainWindow* ui){
 
+void renderCurrent(Ui::MainWindow* ui){
 
     //Если фигуры
     if(CurrentType == 0){
@@ -26,11 +34,6 @@ void renderCurrent(Ui::MainWindow* ui){
         //Если пусто
         if(figureCollection->getSize() == 0){
             ui->label->setText("нет.");
-
-            ui->circleRadiusLabel->hide();
-            ui->triangleSideALabel->hide();
-            ui->triangleSideBLabel->hide();
-            ui->triangleSideCLabel->hide();
 
             ui->widgetFigureCalcs->hide();
 
@@ -54,7 +57,7 @@ void renderCurrent(Ui::MainWindow* ui){
                 ui->figuresPrismsSwitcher->hide();
 
                 ui->prismsWidget->hide();
-
+                ui->dataStrLabel->hide();
                 ui->heightMinus->hide();
                 ui->heightPlus->hide();
 
@@ -82,6 +85,7 @@ void renderCurrent(Ui::MainWindow* ui){
             ui->rotateUp->hide();
             ui->rotateLeft->hide();
             ui->rotateRight->hide();
+            ui->dataStrLabel->show();
 
 
 
@@ -116,8 +120,8 @@ void renderCurrent(Ui::MainWindow* ui){
 
             ui->prismHeightLabel->hide();
 
-            ui->figureSpace->setText(QString::number(currentFigure->Space()));
-            ui->figurePerimeter->setText(QString::number(currentFigure->Perimeter()));
+            ui->figureSpace->setText(QString::number(currentFigure->getSpace()));
+            ui->figurePerimeter->setText(QString::number(currentFigure->getPerimeter()));
 
             ui->label->setText(QString::number(currentFigureNum+1));
 
@@ -156,38 +160,7 @@ void renderCurrent(Ui::MainWindow* ui){
             }
 
             //Вывод информации:
-            if(currentFigure->getType() == CIRCLE){
-                ui->triangleSideALabel->hide();
-                ui->triangleSideBLabel->hide();
-                ui->triangleSideCLabel->hide();
-
-                ui->circleRadiusLabel->show();
-                QString text = "R: ";
-                text += QString::number(getCastedCircle(currentFigure)->GetR());
-                ui->circleRadiusLabel->setText(text);
-            }
-
-            if(currentFigure->getType() == TRIANGLE){
-                ui->triangleSideALabel->show();
-                ui->triangleSideBLabel->show();
-                ui->triangleSideCLabel->show();
-
-                ui->circleRadiusLabel->hide();
-
-                QString textSideA = "A: ";
-                QString textSideB = "B: ";
-                QString textSideC = "C: ";
-
-                Triangle* triangle = getCastedTriangle(currentFigure);
-
-                textSideA += QString::number(triangle->GetA());
-                textSideB += QString::number(triangle->GetB());
-                textSideC += QString::number(triangle->GetC());
-
-                ui->triangleSideALabel->setText(textSideA);
-                ui->triangleSideBLabel->setText(textSideB);
-                ui->triangleSideCLabel->setText(textSideC);
-            }
+            ui->dataStrLabel->setText(QString::fromStdString(currentFigure->getDataStr()));
 
         }
 
@@ -199,6 +172,8 @@ void renderCurrent(Ui::MainWindow* ui){
         ui->makePrismButton->hide();
         ui->figuresGlWidget->hide();
         ui->prismCreateWidget->hide();
+        ui->dataStrLabel->hide();
+
 
         //Если пусто, переключаем на фигуры
         if(prismCollection->getSize() == 0){
@@ -224,7 +199,7 @@ void renderCurrent(Ui::MainWindow* ui){
         }else{
 
             currentPrism = prismCollection->GetPrism(currentPrismNum);
-
+            ui->dataStrLabel->show();
             ui->prismsWidget->setPrism(currentPrism);
 
             ui->prismsWidget->show();
@@ -252,7 +227,7 @@ void renderCurrent(Ui::MainWindow* ui){
 
             //Вывод высоты призмы
             QString textHieght = "H: ";
-            textHieght += QString::number(currentPrism->GetH());
+            textHieght += QString::number(currentPrism->getH());
             ui->prismHeightLabel->setText(textHieght);
             ui->prismHeightLabel->show();
 
@@ -301,38 +276,7 @@ void renderCurrent(Ui::MainWindow* ui){
             }
 
             //Вывод информации об основании призмы
-            if(currentPrism->getType() == CIRCLE){
-                ui->triangleSideALabel->hide();
-                ui->triangleSideBLabel->hide();
-                ui->triangleSideCLabel->hide();
-
-                ui->circleRadiusLabel->show();
-                QString text = "R: ";
-                text += QString::number(getCastedCylinder(currentPrism)->GetR());
-                ui->circleRadiusLabel->setText(text);
-            }
-
-            if(currentPrism->getType() == TRIANGLE){
-                ui->triangleSideALabel->show();
-                ui->triangleSideBLabel->show();
-                ui->triangleSideCLabel->show();
-
-                ui->circleRadiusLabel->hide();
-
-                QString textSideA = "A: ";
-                QString textSideB = "B: ";
-                QString textSideC = "C: ";
-
-                TrianglePrism* triangle = getCastedTrianglePrism(currentPrism);
-
-                textSideA += QString::number(triangle->GetA());
-                textSideB += QString::number(triangle->GetB());
-                textSideC += QString::number(triangle->GetC());
-
-                ui->triangleSideALabel->setText(textSideA);
-                ui->triangleSideBLabel->setText(textSideB);
-                ui->triangleSideCLabel->setText(textSideC);
-            }
+            ui->dataStrLabel->setText(QString::fromStdString(currentPrism->getDataStr()));
 
 
 
@@ -345,6 +289,8 @@ void renderCurrent(Ui::MainWindow* ui){
 
 }
 
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -352,14 +298,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->createFigureWidget->hide();
-    ui->triangleCreateWidget->hide();
-    ui->circleCreateWidget->hide();
-    ui->prismHeightLabel->hide();
 
-    ui->circleRadiusLabel->hide();
-    ui->triangleSideALabel->hide();
-    ui->triangleSideBLabel->hide();
-    ui->triangleSideCLabel->hide();
+    ui->prismHeightLabel->hide();
 
     ui->figuresPrismsSwitcher->hide();
 
@@ -387,6 +327,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->heightMinus->hide();
     ui->heightPlus->hide();
+    ui->dataStrLabel->hide();
 
     ui->rotateDown->hide();
     ui->rotateUp->hide();
@@ -395,6 +336,31 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->rotateLabel->hide();
     ui->moveLabel->hide();
+
+    ui->widgetPropsCreate->hide();
+
+    std::vector<std::string> signsList = figureManager->getSignList();
+
+    for(int i = 0; i < signsList.size(); i++){
+
+        std::string name = signsList[i];
+        std::string idStr = signsList[i];
+        std::string delim = signsList[i].substr(0,1);
+
+        idStr = idStr.erase(0,1);
+        int id = std::stoi(idStr.substr(0, idStr.find(delim)).c_str());
+        name = name.erase(0,1);
+        name = name.erase(0, name.find(delim)+1);
+
+        QString nameQt = QString::fromStdString(name);
+
+        QPushButton* button = new ButtonList(this,name, id);
+
+        QObject::connect(button, SIGNAL(released()), SLOT(on_MainWindow_buttonListClickedSignal()));
+
+        ui->figuresButtonLayout->addWidget(button);
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -402,90 +368,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_triangleCreatePushButton_released()
-{
-    ui->circleCreateWidget->hide();
-    ui->triangleCreateWidget->show();
-}
-
-void MainWindow::on_circleCreatePushButton_released()
-{
-    ui->circleCreateWidget->show();
-    ui->triangleCreateWidget->hide();
-}
-
 void MainWindow::on_createFigureButton_released()
 {
     if(ui->createFigureWidget->isHidden()){
         ui->createFigureWidget->show();
+
+        ui->widgetFigsCreating->show();
+
     }else{
         ui->createFigureWidget->hide();
+
+        ui->widgetFigsCreating->hide();
     }
-}
-
-void MainWindow::on_creatingCircleButton_released()
-{
-    QString radiusStr = ui->circleRadius->text();
-    bool flag;
-    double radius = radiusStr.split(" ")[0].toDouble(&flag);
-    if(flag){
-        Circle* tmpFigure = getCastedCircle(createFigure(radius));
-        if(tmpFigure->TestMySides() == DATA_ERROR){
-            delete tmpFigure;
-            ui->labelDataError->show();
-            return;
-        }
-        currentFigure = tmpFigure;
-        figureCollection->AddFigure(currentFigure);
-        currentFigureNum = figureCollection->getSize() - 1;
-        ui->circleCreateWidget->hide();
-        ui->labelDataError->hide();
-
-        ui->circleRadius->setText("");
-
-    }else{
-        ui->labelDataError->show();
-    }
-
-    CurrentType = 0;
-
-    renderCurrent(ui);
-}
-
-void MainWindow::on_creatingTriangleButton_released()
-{
-    QString sideAStr = ui->triangleSideA->text();
-    QString sideBStr = ui->triangleSideB->text();
-    QString sideCStr = ui->triangleSideC->text();
-
-    bool flag;
-    double a = sideAStr.split(" ")[0].toDouble(&flag);
-    double b = sideBStr.split(" ")[0].toDouble(&flag);
-    double c = sideCStr.split(" ")[0].toDouble(&flag);
-    if(flag){
-        Triangle* tmpFigure = getCastedTriangle(createFigure(a,b,c));
-        if(tmpFigure->TestMySides() != DATA_ERROR){
-            currentFigure = tmpFigure;
-            figureCollection->AddFigure(currentFigure);
-            currentFigureNum = figureCollection->getSize() - 1;
-            ui->triangleCreateWidget->hide();
-            ui->labelDataError->hide();
-
-            ui->triangleSideA->setText("");
-            ui->triangleSideB->setText("");
-            ui->triangleSideC->setText("");
-
-        } else{
-            delete tmpFigure;
-            ui->labelDataError->show();
-        }
-    }else{
-        ui->labelDataError->show();
-    }
-
-    CurrentType = 0;
-
-    renderCurrent(ui);
 }
 
 void MainWindow::on_figuresPrismsSwitcher_released()
@@ -582,8 +476,8 @@ void MainWindow::on_createPrism_released()
 
     if(flag){
 
-        Prism* tmpPrism = createPrism(h, currentFigure, currentFigure->getType());
-        if(tmpPrism->TestHeight() != DATA_ERROR){
+        Prism* tmpPrism = createPrism(h, currentFigure);
+        if(tmpPrism->testHeight() != false){
             currentPrism = tmpPrism;
             prismCollection->AddPrism(currentPrism);
             currentPrismNum = prismCollection->getSize() - 1;
@@ -707,4 +601,106 @@ void MainWindow::on_rotateLeft_released()
 {
     if(CurrentType == 1) ui->prismsWidget->rotateLeft();
     renderCurrent(ui);
+}
+
+void MainWindow::on_MainWindow_buttonListClickedSignal()
+{
+
+    ButtonList* btn = static_cast<ButtonList*>(sender());
+    Outer* figure = figureManager->createFigureObject(btn->getID());
+    currentOuter = figure;
+
+    std::string propertiesStr = figure->getProperties();
+    std::string delim = figure->getDelim();
+
+    int countProperties = figure->getCountProperties();
+
+    propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+    propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+
+    for(int i = 0; i < countProperties; i++){
+        std::string prop = propertiesStr.substr(0, propertiesStr.find(delim));
+        QLabel* label = new QLabel(QString::fromStdString("Введите "+ prop + ":"));
+        if(i != countProperties-1) propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+
+        QLineEdit* lineEdit = new QLineEdit();
+        lineEdit->setObjectName(QString::fromStdString(prop));
+
+        ui->propertiesCreateLayout->addWidget(label);
+        ui->propertiesCreateLayout->addWidget(lineEdit);
+    }
+
+    QPushButton* createButton = new QPushButton("Создать");
+    createButton->setObjectName("createFigure");
+
+    QObject::connect(createButton, SIGNAL(released()), SLOT(on_MainWindow_createButtonClicked()));
+
+    ui->propertiesCreateLayout->addWidget(createButton);
+
+    ui->widgetPropsCreate->show();
+}
+
+void MainWindow::on_MainWindow_buttonListClickedSignal(int aba)
+{
+
+}
+
+void MainWindow::on_MainWindow_createButtonClicked()
+{
+
+    std::string propertiesStr = currentOuter->getProperties();
+    std::string delim = currentOuter->getDelim();
+
+    int countProperties = currentOuter->getCountProperties();
+
+    propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+    propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+
+
+    double* data = new double[countProperties];
+
+    bool flag;
+
+    for(int i = 0; i < countProperties; i++){
+        std::string prop = propertiesStr.substr(0, propertiesStr.find(delim));
+        QLineEdit* inputLine = ui->widgetPropsCreate->findChild<QLineEdit *>(QString::fromStdString(prop));
+        QString dataStr = inputLine->text();
+
+        double currData = dataStr.split(" ")[0].toDouble(&flag);
+
+        if(i != countProperties-1) propertiesStr = propertiesStr.erase(0, propertiesStr.find(delim)+1);
+
+        if(flag) data[i] = currData;
+        if(!flag) break;
+    }
+
+    if(flag){
+        currentOuter->createFigure(data);
+        flag = currentOuter->testSides();
+    }
+
+    if(flag){
+
+        currentFigure = currentOuter;
+
+        for(int i = 0; i < ui->propertiesCreateLayout->count(); i++){
+            ui->propertiesCreateLayout->itemAt(i)->widget()->deleteLater();
+        }
+        ui->widgetPropsCreate->hide();
+        ui->createFigureWidget->hide();
+        ui->labelDataError->hide();
+
+        CurrentType = 0;
+
+        figureCollection->AddFigure(currentFigure);
+        currentFigureNum = figureCollection->getSize()-1;
+
+    }else{
+        currentOuter->clearFigure();
+        ui->labelDataError->show();
+    }
+
+
+    renderCurrent(ui);
+
 }

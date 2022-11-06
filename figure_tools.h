@@ -1,20 +1,10 @@
 #pragma once
-#include "figure.h"
 #include <vector>
 
-#define TYPE_TRIANGLEPRISM 1
-#define TYPE_CYLINDER 0
+#include "Figures/Outer.h"
+#include "Prism/Prism.h"
 
-Figure* createFigure(double,double,double);
-Figure* createFigure(double);
-
-Prism* createPrism(double, Figure*, FigureType type);
-
-TrianglePrism* getCastedTrianglePrism(Prism*);
-Cylinder* getCastedCylinder(Prism*);
-Circle* getCastedCircle(Figure*);
-Triangle* getCastedTriangle(Figure*);
-
+Prism* createPrism(double, Outer*);
 
 class PrismCollection{
 
@@ -37,14 +27,14 @@ class FiguresCollection{
 private:
 
     short size = 0;
-    std::vector <Figure*> figures;
+    std::vector <Outer*> figures;
 
 public:
 
     int getSize();
-    void AddFigure(Figure*); //Добавление элелемента
+    void AddFigure(Outer*); //Добавление элелемента
     void DelFigure(int); // Удаление по номеру
-    Figure* GetFigure(int);  // Получение фигуры по номеру
+    Outer* GetFigure(int);  // Получение фигуры по номеру
 
     ~FiguresCollection();
 };

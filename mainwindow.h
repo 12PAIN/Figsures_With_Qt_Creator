@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "glfigureswidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,15 +18,7 @@ public:
 private slots:
     void on_pushButton_released();
 
-    void on_triangleCreatePushButton_released();
-
-    void on_circleCreatePushButton_released();
-
     void on_createFigureButton_released();
-
-    void on_creatingCircleButton_released();
-
-    void on_creatingTriangleButton_released();
 
     void on_figuresPrismsSwitcher_released();
 
@@ -72,6 +63,12 @@ private slots:
     void on_rotateDown_released();
 
     void on_rotateLeft_released();
+
+    void on_MainWindow_buttonListClickedSignal(int);
+
+    void on_MainWindow_buttonListClickedSignal();
+
+    void on_MainWindow_createButtonClicked();
 
 private:
     Ui::MainWindow *ui;

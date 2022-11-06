@@ -3,11 +3,8 @@
 
 #include <QGLWidget>
 #include <QOpenGLFunctions>
-
-#include  "figure.h"
-#include "figure_tools.h"
-#include <cmath>
-#include <GL/glu.h>
+#include "Prism/Prism.h"
+#include  "Figures/Outer.h"
 
 
 class GLPrismsWidget : public QGLWidget

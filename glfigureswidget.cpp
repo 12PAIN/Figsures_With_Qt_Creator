@@ -1,5 +1,6 @@
 #include "glfigureswidget.h"
 
+#include <iostream>
 
 GLFiguresWidget::GLFiguresWidget(QWidget *parent)
     : QGLWidget{ parent }
@@ -15,7 +16,7 @@ void GLFiguresWidget::initializeGL(){
     glOrtho(0,500,500,0,0,1);
 }
 
-void GLFiguresWidget::setFigure(Figure* newFigure){
+void GLFiguresWidget::setFigure(Outer* newFigure){
     currentFigure = newFigure;
 }
 
@@ -28,66 +29,27 @@ void GLFiguresWidget::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     qglColor(Qt::black);
-
     glBegin(GL_LINES);
         glVertex2d(x_offset, -10);
         glVertex2d(x_offset, 550);
     glEnd();
 
-    if(currentFigure->getType() == TRIANGLE){
+    glBegin(GL_LINES);
+        glVertex2d(-10, y_offset);
+        glVertex2d(550, y_offset);
+    glEnd();
 
-        Triangle* currentTriangle = getCastedTriangle(currentFigure);
 
-        double a = currentTriangle->GetA();
-        double b = currentTriangle->GetB();
-        double c = currentTriangle->GetC();
+    std::vector<std::vector<std::vector<double>>> polygons = currentFigure->getPolygonMatrix();
 
-        double eqB = -2 * a;
-        double eqC = a*a + b*b - c*c;
-
-        double y_0 = -1* (eqC/eqB);
-
-        double d = sqrt(b*b - ((eqC*eqC)/(eqB*eqB)));
-        double mult = sqrt((d*d)/(eqB*eqB));
-
-        double ax = eqB*mult;
-        double ay = y_0;
-
-        glBegin(GL_LINES);
-            glVertex2d(-10, a * scale + y_offset);
-            glVertex2d(550, a * scale + y_offset);
-        glEnd();
-
-        qglColor(Qt::red);
-
-        glBegin(GL_TRIANGLES);
-            glVertex2d(calcX_Offset(),calcY_Offset());
-            glVertex2d(ax * scale + calcX_Offset(), ay * scale + calcY_Offset());
-            glVertex2d(calcX_Offset(), a * scale + calcY_Offset());
-        glEnd();
+    qglColor(Qt::red);
+    glBegin(GL_POLYGON);
+    for(int i = 0; i < polygons.size(); i++){
+        for(int j = 0; j < polygons[i].size(); j++){
+            glVertex2d(scale * polygons[i][j][0] + x_offset, scale * polygons[i][j][1] + y_offset);
+        }
     }
-
-    if(currentFigure->getType() == CIRCLE){
-
-        glBegin(GL_LINES);
-            glVertex2d(-10, y_offset);
-            glVertex2d(550, y_offset);
-        glEnd();
-
-        Circle* currentCircle = getCastedCircle(currentFigure);
-
-        qglColor(Qt::red);
-        glBegin(GL_POLYGON);
-            for(int i = 0; i < 1000; i++){
-                float theta = 2.0f * 3.1415926f * float(i) / float(1000);//get the current angle
-                float x = currentCircle->GetR() * cosf(theta);//calculate the x component
-                float y = currentCircle->GetR() * sinf(theta);//calculate the y component
-
-                glVertex2d(x * scale + calcX_Offset(), y * scale + calcY_Offset());
-            }
-        glEnd();
-    }
-
+    glEnd();
 
 }
 

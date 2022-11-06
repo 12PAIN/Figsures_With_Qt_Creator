@@ -26,21 +26,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    figure.cpp \
-    figure_tools.cpp \
-    geometry_math.cpp \
-    Figures.cpp \
+    main.cpp \
+    mainwindow.cpp \
     glfigureswidget.cpp \
-    glprismswidget.cpp
+    glprismswidget.cpp \
+    figure_tools.cpp \
+    buttonlist.cpp \
+    Prism/Prism.cpp \
+    Figures/Outer.cpp \
+    Figures/figuresmanager.cpp \
+    Figures/Triangle/triangle.cpp \
+    Figures/Triangle/triangleouter.cpp \
+    Figures/Circle/circle.cpp \
+    Figures/Circle/circleouter.cpp
 
 HEADERS += \
-        mainwindow.h \
-    figure.h \
-    figure_tools.h \
+    mainwindow.h \
     glfigureswidget.h \
-    glprismswidget.h
+    glprismswidget.h \
+    figure_tools.h \
+    buttonlist.h \
+    Prism/Prism.h \
+    Figures/Outer.h \
+    Figures/figuresmanager.h \
+    Figures/Triangle/triangle.h \
+    Figures/Triangle/triangleouter.h \
+    Figures/Circle/circle.h \
+    Figures/figure.h
+    Figures/Circle/circleouter.h
 
 FORMS += \
         mainwindow.ui

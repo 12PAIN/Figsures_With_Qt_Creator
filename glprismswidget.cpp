@@ -29,19 +29,89 @@ void GLPrismsWidget::paintGL(){
 
     double scale = scaleKoef*scaleKoef;
 
+    double height = currentPrism->getH() * scale;
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     qglColor(Qt::gray);
     glBegin(GL_LINES);
 
-        for(float i = -1000; i < 1000; i += 0.5){
-            glVertex3d(i,0,-1000);
-            glVertex3d(i,0,1000);
+        for(float i = -1000*scale; i < 1000*scale; i += 1*scale){
+            glVertex3d(i,0,-1000*scale);
+            glVertex3d(i,0,1000*scale);
+        }
+
+        for(float i = -1000*scale; i < 1000*scale; i += 1*scale){
+            glVertex3d(-1000*scale,0,i);
+            glVertex3d(1000*scale,0,i);
         }
 
     glEnd();
 
+    std::vector<std::vector<std::vector<double>>> polygons = currentPrism->getPolygons();
+
+    qglColor(Qt::red);
+    glBegin(GL_POLYGON);
+        for(int i = 0; i < polygons.size(); i++){
+            for(int j = 0; j < polygons[i].size(); j++){
+                glVertex3d(scale * polygons[i][j][0], 0, scale * polygons[i][j][1]);
+            }
+        }
+    glEnd();
+
+    qglColor(Qt::green);
+    glBegin(GL_POLYGON);
+        for(int i = 0; i < polygons.size(); i++){
+            for(int j = 0; j < polygons[i].size(); j++){
+                glVertex3d(scale * polygons[i][j][0], height, scale * polygons[i][j][1]);
+            }
+        }
+    glEnd();
+
+    bool inHeight = false;
+
+    double x_start;
+    double y_start;
+
+
+    glBegin(GL_QUAD_STRIP);
+
+    for(int i = 0; i < polygons.size(); i++){
+
+        for(int j = 0; j < polygons[i].size(); j++){
+
+            //if(inHeight == false){
+                qglColor(Qt::red);
+                glVertex3d(scale * polygons[i][j][0], 0, scale * polygons[i][j][1]);
+                qglColor(Qt::green);
+                glVertex3d(scale * polygons[i][j][0], height, scale * polygons[i][j][1]);
+                inHeight = true;
+            //}else{
+            //    glVertex3d(scale * polygons[i][j][0], height, scale * polygons[i][j][1]);
+            //    glVertex3d(scale * polygons[i][j][0], 0, scale * polygons[i][j][1]);
+            //    inHeight = false;
+            //}
+        }
+
+        x_start = polygons[i][0][0];
+        y_start = polygons[i][0][1];
+
+        //if(inHeight == false){
+            qglColor(Qt::red);
+            glVertex3d(scale*x_start,0,scale*y_start);
+            qglColor(Qt::green);
+            glVertex3d(scale*x_start, height,scale*y_start);
+        //}else{
+        //    glVertex3d(scale*x_start, height,scale*y_start);
+        //    glVertex3d(scale*x_start, 0,scale*y_start);
+        //}
+
+        inHeight = false;
+    }
+
+    glEnd();
+    /*
     if(currentPrism->getType() == TRIANGLE){
         TrianglePrism* prism = getCastedTrianglePrism(currentPrism);
 
@@ -164,6 +234,7 @@ void GLPrismsWidget::paintGL(){
         glEnd();
 
     }
+*/
 }
 
 void GLPrismsWidget::glDrawIt(){

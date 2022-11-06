@@ -44,165 +44,65 @@
     <property name="styleSheet">
      <string notr="true">background: rgb(255, 243, 230)</string>
     </property>
-    <widget class="QPushButton" name="triangleCreatePushButton">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>40</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Треугольник</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="circleCreatePushButton">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>70</y>
-       <width>81</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Окружность</string>
-     </property>
-    </widget>
-    <widget class="QWidget" name="triangleCreateWidget" native="true">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>120</width>
-       <height>176</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Сторона A:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="triangleSideA">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Сторона B:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="triangleSideB">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Сторона C:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="triangleSideC">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="creatingTriangleButton">
-        <property name="text">
-         <string>Создать</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="circleCreateWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>120</width>
-       <height>86</height>
-      </rect>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>120</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item alignment="Qt::AlignLeft">
-       <widget class="QLabel" name="label_17">
-        <property name="text">
-         <string>Радиус:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="circleRadius">
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="creatingCircleButton">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Создать</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QLabel" name="labelDataError">
      <property name="geometry">
       <rect>
        <x>60</x>
-       <y>280</y>
-       <width>47</width>
-       <height>13</height>
+       <y>40</y>
+       <width>51</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="text">
       <string>Ошибка!</string>
      </property>
     </widget>
-    <zorder>triangleCreatePushButton</zorder>
-    <zorder>circleCreatePushButton</zorder>
-    <zorder>circleCreateWidget</zorder>
-    <zorder>triangleCreateWidget</zorder>
+    <widget class="QWidget" name="widgetFigsCreating" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>131</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>131</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="figuresButtonLayout"/>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="widgetPropsCreate" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>131</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>131</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="propertiesCreateLayout"/>
+     </widget>
+    </widget>
     <zorder>labelDataError</zorder>
+    <zorder>widgetFigsCreating</zorder>
+    <zorder>frame_2</zorder>
+    <zorder>widgetPropsCreate</zorder>
    </widget>
    <widget class="QWidget" name="bottomWidget" native="true">
     <property name="geometry">
@@ -219,45 +119,6 @@
     <property name="styleSheet">
      <string notr="true">background: rgb(255, 243, 230)</string>
     </property>
-    <widget class="QLineEdit" name="triangleSideALabel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="triangleSideBLabel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>20</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="triangleSideCLabel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>20</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
@@ -274,19 +135,6 @@
       <string>След.</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="circleRadiusLabel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>71</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="prismHeightLabel">
      <property name="enabled">
       <bool>false</bool>
@@ -294,7 +142,7 @@
      <property name="geometry">
       <rect>
        <x>220</x>
-       <y>20</y>
+       <y>0</y>
        <width>71</width>
        <height>20</height>
       </rect>
@@ -423,6 +271,19 @@
      </property>
      <property name="text">
       <string>нет</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="dataStrLabel">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>281</width>
+       <height>21</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -851,8 +712,8 @@
      </rect>
     </property>
    </widget>
-   <zorder>figuresGlWidget</zorder>
    <zorder>prismsWidget</zorder>
+   <zorder>figuresGlWidget</zorder>
    <zorder>createFigureWidget</zorder>
    <zorder>bottomWidget</zorder>
    <zorder>createFigureButton</zorder>
@@ -896,6 +757,11 @@
     <string>moveRight</string>
    </property>
   </action>
+  <action name="actionlistButtonClicked">
+   <property name="text">
+    <string>listButtonClicked</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -914,4 +780,10 @@
  </customwidgets>
  <resources/>
  <connections/>
+ <slots>
+  <signal>buttonListClickedSignal()</signal>
+  <signal>buttonListClickedSignal(int)</signal>
+  <signal>createButtonClicked()</signal>
+  <slot>buttonListClicked()</slot>
+ </slots>
 </ui>
