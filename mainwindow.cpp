@@ -372,13 +372,22 @@ void MainWindow::on_createFigureButton_released()
 {
     if(ui->createFigureWidget->isHidden()){
         ui->createFigureWidget->show();
-
         ui->widgetFigsCreating->show();
+
+
 
     }else{
         ui->createFigureWidget->hide();
 
         ui->widgetFigsCreating->hide();
+
+        for(int i = 0; i < ui->propertiesCreateLayout->count(); i++){
+            ui->propertiesCreateLayout->itemAt(i)->widget()->deleteLater();
+        }
+        ui->widgetPropsCreate->hide();
+        ui->createFigureWidget->hide();
+        ui->labelDataError->hide();
+        if(currentOuter != nullptr) delete currentOuter;
     }
 }
 
