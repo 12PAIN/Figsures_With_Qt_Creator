@@ -21,7 +21,6 @@ Outer* currentOuter;
 
 int CurrentType = 0;
 
-
 void renderCurrent(Ui::MainWindow* ui){
 
     //Если фигуры
@@ -289,8 +288,6 @@ void renderCurrent(Ui::MainWindow* ui){
 
 }
 
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -377,16 +374,21 @@ void MainWindow::on_createFigureButton_released()
 
 
     }else{
-        ui->createFigureWidget->hide();
+
+        ui->widgetPropsCreate->hide();
 
         ui->widgetFigsCreating->hide();
 
-        for(int i = 0; i < ui->propertiesCreateLayout->count(); i++){
-            ui->propertiesCreateLayout->itemAt(i)->widget()->deleteLater();
-        }
-        ui->widgetPropsCreate->hide();
         ui->createFigureWidget->hide();
+
+        if(ui->propertiesCreateLayout->count() != 0){
+            for(int i = 0; i < ui->propertiesCreateLayout->count(); i++){
+                ui->propertiesCreateLayout->itemAt(i)->widget()->deleteLater();
+            }
+        }
+
         ui->labelDataError->hide();
+
         if(currentOuter != nullptr) delete currentOuter;
     }
 }
@@ -702,6 +704,9 @@ void MainWindow::on_MainWindow_createButtonClicked()
         CurrentType = 0;
 
         figureCollection->AddFigure(currentFigure);
+
+        currentOuter = nullptr;
+
         currentFigureNum = figureCollection->getSize()-1;
 
     }else{
